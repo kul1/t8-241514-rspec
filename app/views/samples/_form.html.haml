@@ -1,0 +1,16 @@
+= form_for @sample do |f|
+  - if @sample.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@sample.errors.count, "error")} prohibited this sample from being saved:"
+      %ul
+        - @sample.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :item
+    = f.text_field :item
+  .actions
+    = f.submit 'Save'

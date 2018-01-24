@@ -41,15 +41,15 @@ RSpec.describe ArticlesController, type: :controller do
       end
     end
 
-    user = {}
-    user["uid"] = "admin"
-    user["provider"] = "Facebook"
-    user["email"] = "1.0@kul.asia"
-    user["role"] = "a,m"
+    @user = {}
+    @user["uid"] = "admin"
+    @user["provider"] = "Facebook"
+    @user["email"] = "1.0@kul.asia"
+    @user["role"] = "a,m"
 
 
 
-    current_ma_user = user
+    current_ma_user = @user
 
     $xvars = {}
     $xvars["form_article"] = {}
@@ -57,7 +57,7 @@ RSpec.describe ArticlesController, type: :controller do
     $xvars["form_article"]["title"] = "AAAAAA"
     $xvars["form_article"]["text"] = "AAAAAA"
     $xvars["form_article"]["body"] = "AAAAA"
-    $xvars["user_id"] = user
+    $xvars["user_id"] = @user
 
 
     $xvars["select_article"] = {}
@@ -70,6 +70,7 @@ RSpec.describe ArticlesController, type: :controller do
     $xvars["edit_article"]["article"]["text"] = "BBBBB"
     $xvars["edit_article"]["article"]["keywords"] = "BBBBB"
     $xvars["edit_article"]["article"]["body"] = "BBBBB"
+    $xvars["current_ma_user"] = current_ma_user
 
     let(:valid_attributes) {
      $xvars
@@ -169,7 +170,7 @@ RSpec.describe ArticlesController, type: :controller do
     it "destroys the requested article" do
       article = Article.create! valid_attributes
       expect {
-        delete :destroy, params: {id: article.to_param}, session: valid_session
+        delete :destroy, params: {id: article.to_param, current_ma_user: @user}, session: valid_session
       }.to change(Article, :count).by(-1)
     end
 

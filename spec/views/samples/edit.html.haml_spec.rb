@@ -12,9 +12,7 @@ RSpec.describe "samples/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", sample_path(@sample), "post" do
-
       assert_select "input[name=?]", "sample[title]"
-
       assert_select "input[name=?]", "sample[item]"
     end
   end

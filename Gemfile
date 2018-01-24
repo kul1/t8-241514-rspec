@@ -86,4 +86,6 @@ group :development, :test do
   gem 'guard-minitest'
   gem 'capybara'
   gem 'rb-fsevent'
+  gem 'database_cleaner'
+  gem 'simplecov', require:false
 end

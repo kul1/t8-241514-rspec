@@ -28,50 +28,57 @@ RSpec.describe ArticlesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Article. As you add validations to Article, be sure to
   # adjust the attributes here as well.
-  let(:valid_input) {
-    {:title => "My Title", :text => "My Item", :user_id => "admin"}
-  }
+    let(:valid_input) {
+      {:title => "My Title", :text => "My Item", :user_id => "admin"}
+    }
 
-  let(:invalid_input) {
-    {:title => "", :text => "", :user_id => ""}
-  }
+    let(:invalid_input) {
+      {:title => "", :text => "", :user_id => ""}
+    }
+    class Hash
+      def role
+        "a,m"
+      end
+    end
 
-    $xvars = Hash.new
-    $xvars["form_article"] = Hash.new
+    user = {}
+    user["uid"] = "admin"
+    user["provider"] = "Facebook"
+    user["email"] = "1.0@kul.asia"
+    user["role"] = "a,m"
+
+
+
+    current_ma_user = user
+
+    $xvars = {}
+    $xvars["form_article"] = {}
 
     $xvars["form_article"]["title"] = "AAAAAA"
     $xvars["form_article"]["text"] = "AAAAAA"
     $xvars["form_article"]["body"] = "AAAAA"
-    $xvars["user_id"] = "4"
-    $nxvars = Hash.new
-    $nxvars["edit_article"] = Hash.new
-    $nxvars["edit_article"]["article"] = Hash.new
-    $nxvars["edit_article"]["article"]["title"] = "BBBBB"
-    $nxvars["edit_article"]["article"]["text"] = "BBBBB"
-    $nxvars["edit_article"]["article"]["keywords"] = "BBBBB"
-    $nxvars["edit_article"]["article"]["body"] = "BBBBB"
-    $nxvars["p"] = Hash.new
-    $nxvars["p"]["article_id"] ="4"
+    $xvars["user_id"] = user
 
-  # binding.pry
-  # let(:valid_attributes) {
-  #
-  #   #{$xvars => "{"form_article"=>{"title"=>"AAAAAA", "text"=>"AAAAAA", "body"=>"AAAAA"}, "user_id"=>"4"}" }
-  #    {
-  #     $xvars =>{"form_article\"=>\{\"title\"=>\"AAAAAA\", \"text\"=>\"AAAAAA\", \"body\"=>\"AAAAA\""}, "user_id"=>"4"}
-  #     #$xvars =>{"form_article"=>"\{"title"=>"AAAAAA"\}", "user_id"=>"4" }
-  #
-  #   }
-  # }
 
-   let(:valid_attributes) {
+    $xvars["select_article"] = {}
+    $xvars["select_article"] = nil
+    $xvars["p"] = {}
+    $nxvars = {}
+    $xvars["edit_article"] = {}
+    $xvars["edit_article"]["article"] = {}
+    $xvars["edit_article"]["article"]["title"] = "BBBBB"
+    $xvars["edit_article"]["article"]["text"] = "BBBBB"
+    $xvars["edit_article"]["article"]["keywords"] = "BBBBB"
+    $xvars["edit_article"]["article"]["body"] = "BBBBB"
+
+    let(:valid_attributes) {
      $xvars
-   }
+    }
 
-  let(:invalid_attributes) {
-    {}
+    let(:invalid_attributes) {
+      {}
+    }
 
-  }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -128,26 +135,29 @@ RSpec.describe ArticlesController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        $nxvars
+        $xvars
       }
 
-      skip it "updates the requested article" do
+     it "updates the requested article" do
         article = Article.create! valid_attributes
-        put :update, params: {id: $nxvars["p"]["article_id"], article: new_attributes}, session: valid_session
+        $xvars["p"]["article_id"] = article.to_param
+        put :update, params: {id: article.to_param, article: new_attributes}, session: valid_session
         article.reload
-        expect(article.title).to eq "AAAAAA"
+        expect(article.title).to eq "BBBBB"
       end
 
-      skip it "redirects to the article" do
+      it "redirects to the article" do
         article = Article.create! valid_attributes
-        put :update, params: {id: article.to_param, article: valid_attributes}, session: valid_session
+        $xvars["p"]["article_id"] = article.to_param
+        put :update, params: {id: article.to_param, article: new_attributes}, session: valid_session
         expect(response).to redirect_to(article)
       end
     end
 
     context "with invalid params" do
-      skip it "returns a success response (i.e. to display the 'edit' template)" do
+      it "returns a success response (i.e. to display the 'edit' template)" do
         article = Article.create! valid_attributes
+        $xvars["p"]["article_id"] = article.to_param
         put :update, params: {id: article.to_param, article: invalid_attributes}, session: valid_session
         expect(response).not_to be_success
       end
@@ -155,14 +165,15 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    skip it "destroys the requested article" do
+
+    it "destroys the requested article" do
       article = Article.create! valid_attributes
       expect {
         delete :destroy, params: {id: article.to_param}, session: valid_session
       }.to change(Article, :count).by(-1)
     end
 
-    skip it "redirects to the articles list" do
+    it "redirects to the articles list" do
       article = Article.create! valid_attributes
       delete :destroy, params: {id: article.to_param}, session: valid_session
       expect(response).to redirect_to(articles_url)

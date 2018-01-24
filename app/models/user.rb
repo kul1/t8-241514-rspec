@@ -27,6 +27,7 @@ class User
     return role.upcase.split(',').include?(role1.upcase)
   end
   
+
   def self.from_omniauth(auth)
     where(auth.slice(:uid, :provider, :email)).first_or_create do |user|
       case auth.provider 

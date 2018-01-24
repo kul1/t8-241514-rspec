@@ -26,9 +26,9 @@ class ArticlesController < ApplicationController
                       keywords: $xvars["form_article"]["keywords"],
                       body: $xvars["form_article"]["body"],
                       user_id: $xvars["user_id"])
-         @article.save!
+    @article.save!
       # if @article.save!
-      #   format.html { redirect_to @article }
+      #   format.html { redirect_to @article, notice: 'Sample was successfully created.'  }
       #   format.json { render :show, status: :created, location: @article }
       # else
       #   format.html { render :new }
@@ -54,11 +54,14 @@ class ArticlesController < ApplicationController
                     text: $xvars["edit_article"]["article"]["text"],
                     keywords: $xvars["edit_article"]["article"]["keywords"],
                     body: $xvars["edit_article"]["article"]["body"])
+    redirect_to @article
+
 
   end
 
   def destroy
     if current_ma_user.role.upcase.split(',').include?("A") || current_ma_user == @article.user
+    #if current_ma_user == @article.user #Green
       @article.destroy
     end
       redirect_to :action=>'index'

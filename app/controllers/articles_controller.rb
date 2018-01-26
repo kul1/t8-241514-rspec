@@ -61,7 +61,7 @@ class ArticlesController < ApplicationController
 
   def destroy
     if Rails.env.test? #Temp solution until fix test of current_ma_user
-      current_ma_user = $xvars["current_ma_user"] # For Test Pass
+      current_ma_user = $xvars["current_ma_user"]
     end
     if current_ma_user.role.upcase.split(',').include?("A") || current_ma_user == @article.user
       @article.destroy

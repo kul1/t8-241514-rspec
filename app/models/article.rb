@@ -8,7 +8,7 @@ class Article
   field :text, :type => String
   belongs_to :user
   has_many :comments
-  #validates :title, :text, :user_id, presence: true
+  validates :title, :text, :user_id, presence: true
   field :body, :type => String
   field :keywords, :type => String
   # jinda end
